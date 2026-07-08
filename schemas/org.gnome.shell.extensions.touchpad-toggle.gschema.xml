@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schemalist>
+  <schema id="org.gnome.shell.extensions.touchpad-toggle" path="/org/gnome/shell/extensions/touchpad-toggle/">
+    <key name="shortcut" type="as">
+      <default>[]</default>
+      <summary>Keyboard shortcut to toggle touchpad</summary>
+    </key>
+    <key name="show-indicator" type="b">
+      <default>true</default>
+      <summary>Show indicator in quick settings</summary>
+    </key>
+  </schema>
+</schemalist>
