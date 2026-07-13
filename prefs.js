@@ -4,8 +4,6 @@ import Gtk from 'gi://Gtk';
 import Gdk from 'gi://Gdk';
 import { ExtensionPreferences } from 'resource:///org/gnome/Shell/Extensions/js/extensions/prefs.js';
 
-const SCHEMA_ID = 'org.gnome.shell.extensions.touchpad-toggle';
-
 export default class TouchpadTogglePrefs extends ExtensionPreferences {
     fillPreferencesWindow(window) {
         const settings = this.getSettings();
@@ -38,7 +36,7 @@ export default class TouchpadTogglePrefs extends ExtensionPreferences {
         });
 
         const shortcutLabel = new Gtk.ShortcutLabel({
-            accelerator: this._getCurrentShortcut(),
+            accelerator: this._getCurrentShortcut(settings),
             hexpand: true,
             halign: Gtk.Align.END,
             valign: Gtk.Align.CENTER,
@@ -70,12 +68,12 @@ export default class TouchpadTogglePrefs extends ExtensionPreferences {
         });
 
         settings.connect('changed::shortcut', () => {
-            shortcutLabel.set_accelerator(this._getCurrentShortcut());
+            shortcutLabel.set_accelerator(this._getCurrentShortcut(settings));
         });
     }
 
-    _getCurrentShortcut() {
-        const strv = this.getSettings().get_strv('shortcut');
+    _getCurrentShortcut(settings) {
+        const strv = settings.get_strv('shortcut');
         return strv.length > 0 ? strv[0] : '';
     }
 

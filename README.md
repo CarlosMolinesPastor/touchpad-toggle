@@ -53,16 +53,6 @@ Open preferences via:
 gnome-extensions prefs touchpad-toggle-ext@CarlosMolinesPastor
 ```
 
-## Screenshots
-
-### Settings Panel
-
-![Settings](img/settings.png)
-
-### Touchpad Toggle in Quick Settings
-
-![Touchpad Toggle](img/touchpad.png)
-
 ## Requirements
 
 - GNOME Shell 50 or later

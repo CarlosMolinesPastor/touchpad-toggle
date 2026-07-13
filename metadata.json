@@ -6,6 +6,8 @@
   "version": 1,
   "url": "https://github.com/CarlosMolinesPastor/touchpad-toggle",
   "author": "CarlosMolinesPastor",
-  "license": "MIT",
-  "settings-schema": "org.gnome.shell.extensions.touchpad-toggle"
+  "settings-schema": "org.gnome.shell.extensions.touchpad-toggle",
+  "donations": {
+    "url": "https://github.com/sponsors/CarlosMolinesPastor"
+  }
 }

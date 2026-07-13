@@ -15,6 +15,8 @@ export default class TouchpadToggleExtension extends Extension {
         this.extensionSettings = this.getSettings();
         this.touchpadSettings = new Gio.Settings({ schema_id: SETTINGS_SCHEMA_ID });
 
+        this._connections = [];
+
         this.enableToggleIndicator();
 
         if (this.extensionSettings.get_boolean('show-indicator')) {
@@ -23,25 +25,23 @@ export default class TouchpadToggleExtension extends Extension {
 
         this.bindShortcut();
 
-        this.listenerTouchpadState = this.touchpadSettings.connect('changed::send-events', () => this.onTouchpadStateChange());
-        this.listenerShowIndicator = this.extensionSettings.connect('changed::show-indicator', () => this.onIndicatorStateChange());
+        this._connections.push(
+            this.touchpadSettings.connect('changed::send-events', () => this.onTouchpadStateChange())
+        );
+        this._connections.push(
+            this.extensionSettings.connect('changed::show-indicator', () => this.onIndicatorStateChange())
+        );
     }
 
     disable() {
         this.unbindShortcut();
         this.disableToggleIndicator();
         this.disableIconIndicator();
-
-        if (this.listenerShowIndicator) {
-            this.extensionSettings.disconnect(this.listenerShowIndicator);
-            this.listenerShowIndicator = null;
-        }
-        if (this.listenerTouchpadState) {
-            this.touchpadSettings.disconnect(this.listenerTouchpadState);
-            this.listenerTouchpadState = null;
-        }
-        this.touchpadSettings = null;
-        this.extensionSettings = null;
+        this._connections.forEach(id => {
+            this.touchpadSettings.disconnect(id);
+            this.extensionSettings.disconnect(id);
+        });
+        this._connections = [];
     }
 
     bindShortcut() {
@@ -118,9 +118,9 @@ export default class TouchpadToggleExtension extends Extension {
         if (!this.toggleIndicator) {
             const toggle = new TouchpadToggle();
             toggle.updateState(this.getTouchpadState());
-            this.listenerTouchpadToggle = toggle.connect('state-updated', (_, state) => {
-                this.updateSendEventsSetting(state);
-            });
+            this._connections.push(
+                toggle.connect('state-updated', (_, state) => this.updateSendEventsSetting(state))
+            );
             this.toggleIndicator = new SystemIndicator();
             this.toggleIndicator.quickSettingsItems.push(toggle);
             panel.statusArea.quickSettings.addExternalIndicator(this.toggleIndicator);
@@ -129,10 +129,6 @@ export default class TouchpadToggleExtension extends Extension {
 
     disableToggleIndicator() {
         if (this.toggleIndicator) {
-            if (this.listenerTouchpadToggle) {
-                this.toggleIndicator.quickSettingsItems[0].disconnect(this.listenerTouchpadToggle);
-                this.listenerTouchpadToggle = null;
-            }
             this.toggleIndicator.quickSettingsItems.forEach((item) => item.destroy());
             this.toggleIndicator.destroy();
             this.toggleIndicator = null;
