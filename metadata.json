@@ -6,8 +6,5 @@
   "version": 1,
   "url": "https://github.com/CarlosMolinesPastor/touchpad-toggle",
   "author": "CarlosMolinesPastor",
-  "settings-schema": "org.gnome.shell.extensions.touchpad-toggle",
-  "donations": {
-    "url": "https://github.com/sponsors/CarlosMolinesPastor"
-  }
+  "settings-schema": "org.gnome.shell.extensions.touchpad-toggle"
 }

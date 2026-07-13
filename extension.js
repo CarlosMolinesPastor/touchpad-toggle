@@ -42,6 +42,8 @@ export default class TouchpadToggleExtension extends Extension {
             this.extensionSettings.disconnect(id);
         });
         this._connections = [];
+        this.extensionSettings = null;
+        this.touchpadSettings = null;
     }
 
     bindShortcut() {
